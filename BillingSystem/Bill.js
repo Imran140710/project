@@ -78,12 +78,10 @@ function addStoreRow() {
     localStorage.setItem(name + "Item", name);
     localStorage.setItem(name + "Rate", rate);
    
-    
+    document.getElementById("allData").innerHTML='';
     document.getElementById("StoreName" + (StoreCount)).setAttribute('readonly','true');
     document.getElementById("StoreRate" + (StoreCount)).setAttribute('readonly','true');
-    document.getElementById("StoreGST" + (StoreCount)).setAttribute('readonly','true');
-    document.getElementById("StoreDiscount" + (StoreCount)).setAttribute('readonly','true');
-    
+   
     StoreCount=StoreCount+1;
   
     
@@ -152,19 +150,31 @@ function sendFormattedData() {
 
 }
 function displayLocalStorageData(){
-    for (let i = 0; i < localStorage.length; i++) {
-        var Key=localStorage.key(i);
+    var keys = Object.keys(localStorage).sort(); 
+    if(localStorage.length==0){
+        Swal.fire({
+            title: "No Data There To Be Shown",
+            icon: "info"
+          });
+    }
+    else{
+    for (let i = 0; i < keys.length; i++) {
+        var Key = keys[i];
         var Value = localStorage.getItem(Key);
-        document.getElementById('allData').innerHTML+="<tr><td id='Key"+i+"'>"+Key+"</td><td id='Value"+i+"'>"+Value+"</td><td><button id='"+i+"' onclick='deleteItem(this.id)'>Delete</button></td></tr>"
-
+        document.getElementById('allData').innerHTML += "<tr id='Row"+i+"'><td id='Key"+i+"'>"+Key+"</td><td id='Value"+i+"'>"+Value+"</td><td><button id='"+i+"' onclick='deleteItem(this.id)'>Delete</button></td></tr>";
+        document.getElementById("allData").style.visibility="visible";
     }
 }
-
+}
 function deleteItem(ID) {
     localStorage.removeItem(document.getElementById('Key'+ID).innerHTML);
+    document.getElementById('Row'+ID).style.display='none';
+
+   
 }
   
 
   function showData() {
     displayLocalStorageData();
+    
   }
