@@ -2,6 +2,7 @@ var Count = 1;
 
 
 
+
 function addRows() {
     var TableArea = document.getElementById("InsertRow");
     var newRow = document.createElement('tr');
@@ -24,12 +25,9 @@ if(localStorage.getItem(document.getElementById("Name"+(Count-1)).value+"Item")=
 function calculateAmount(index) {
     var quantity = parseFloat(document.getElementById("Quantity" + index).value) || 0;
     var rate = parseFloat(document.getElementById("Rate" + index).value) || 0;
-    var gst = parseFloat(document.getElementById("GST" + index).value) || 0;
-    var discount = parseFloat(document.getElementById("Discount" + index).value) || 0;
-
-    var amount = quantity * rate + (quantity * rate * gst / 100);
-    amount -= amount * (discount / 100);
-
+    
+    var amount = quantity * rate;
+    
     return amount;
 }
 
@@ -50,7 +48,7 @@ function calculateTotal() {
     var total = 0;
 
     for (var i = 1; i < rows.length; i++) {
-        var amountCell = rows[i].querySelector("td:nth-child(7) input");
+        var amountCell = rows[i].querySelector("td:nth-child(4) input");
         if (amountCell) {
             var amountValue = parseFloat(amountCell.value) || 0;
             total += amountValue;
@@ -96,9 +94,7 @@ function showStoreTable(x) {
    if(Count==1){
     document.getElementById("Table").style.display="none";
     document.getElementById("StoreTable").style.visibility="visible";
-    document.getElementById("clearBTN").style.display="inline-block";
-    document.getElementById("clearItemBTN").style.display="inline-block";
-    document.getElementById("checkBTN").style.display="inline-block";
+    document.getElementById("showDataBTN").style.display="inline-block";
     document.getElementById("copyData").style.display="inline-block";
     document.getElementById("addBTN").setAttribute('onclick','addStoreRow();');
     x.innerHTML="Billing Area";
@@ -111,100 +107,11 @@ function showStoreTable(x) {
     
 }
 
-function clearData() {
-    var confirmation=prompt("Type 'Data' to clear All Data");
-    if(confirmation=="Data")
-    {
-        if(localStorage.length===0)
-        {
-            Swal.fire({
-                title: "No Data To Be Deleted",
-                icon: "info"
-              });
-        }
-        else{
-        localStorage.clear();
-        Swal.fire({
-            title: "Data Deletion Successful",
-            icon: "success"
-          });
-        }
-        
-    }
-    else if(confirmation!=="Data"){
-        Swal.fire({
-            title: "Data Deletion Canceled",
-            icon: "error"
-          });
-    }
-   }
+
 
   
-function clearItem() {
-    var ItemName = prompt("Enter Item Name");
-    if(localStorage.length===0 )
-    {
-        Swal.fire({
-            title: "No Data Found",
-            icon: "error"
-          });
-    }
-    else if(ItemName===null){
-        Swal.fire({
-            title: "Enter Item Name",
-            icon: "info"
-          });
-    }
-    else if(localStorage.getItem(ItemName+"Item")==null){
-        Swal.fire({
-            title: "No Item Called '"+ItemName+"'",
-            icon: "error"
-          });
-
-    }
-    else{
-        localStorage.removeItem(ItemName+"Item");
-        localStorage.removeItem(ItemName+"Rate");
-        localStorage.removeItem(ItemName+"GST");
-        localStorage.removeItem(ItemName+"Discount");
-        Swal.fire({
-            title: "Successfully Deleted Item",
-            icon: "success"
-          });
-
-    }
-}
-
-function checkItem() {
-    if(localStorage.length===0)
-    {
-        Swal.fire({
-            title: "No Data Available To Be Checked",
-            icon: "error"
-          });
-    }
-    else{
-        var k= prompt('Enter Item Name');
-      
-        if(k==localStorage.getItem(k+"Item"))
-        {
-            Swal.fire({
-                title: "Item Found",
-                text:"Rate : "+"₹ "+localStorage.getItem(k+"Rate"),
-                icon: "success"
-              });
-        }
-        else{
-            Swal.fire({
-                title: "No Item Called '"+k+"'",
-                icon: "error"
-              });
-        }
-        
-    
    
-}
-}
+
 
 function sendEmail(Data){
     Email.send({
@@ -244,3 +151,20 @@ function sendFormattedData() {
 }
 
 }
+function displayLocalStorageData(){
+    for (let i = 0; i < localStorage.length; i++) {
+        var Key=localStorage.key(i);
+        var Value = localStorage.getItem(Key);
+        document.getElementById('allData').innerHTML+="<tr><td id='Key"+i+"'>"+Key+"</td><td id='Value"+i+"'>"+Value+"</td><td><button id='"+i+"' onclick='deleteItem(this.id)'>Delete</button></td></tr>"
+
+    }
+}
+
+function deleteItem(ID) {
+    localStorage.removeItem(document.getElementById('Key'+ID).innerHTML);
+}
+  
+
+  function showData() {
+    displayLocalStorageData();
+  }
