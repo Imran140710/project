@@ -116,3 +116,17 @@ textarea{
     color:white;
     font-size:28px;
 }
+
+#allData{
+    visibility: hidden;
+}
+
+#allData button{
+    background-color: red;
+    color: white;
+    font-family: 'Poppins';
+    border-color: transparent;
+    border-radius: 2px;
+    height:fit-content;
+    width:fit-content;
+}
