@@ -42,15 +42,7 @@ function updateAmounts() {
     calculateTotal();
 }
 
-function addAfterEnter(event) {
-    var key = event.key;
-    if (document.getElementById("StoreTable").style.visibility!=="visible" && key == "Enter") {
-        addRows();
-    }
-    else if(document.getElementById("StoreTable").style.visibility=="visible" && key == "Enter"){
-        addStoreRow();
-    }
-}
+
 
 function calculateTotal() {
     var table = document.getElementById("Table");
@@ -70,23 +62,7 @@ function calculateTotal() {
 
 setInterval(updateAmounts,1000);
 
-function showStoreTable(x) {
-    
-    if(Count==1){
-    document.getElementById("Table").style.display="none";
-    document.getElementById("StoreTable").style.visibility="visible";
-    document.getElementById("clearBTN").style.display="inline-block";
-    document.getElementById("clearItemBTN").style.display="inline-block";
-    document.getElementById("checkBTN").style.display="inline-block";
-    document.getElementById("copyData").style.display="inline-block";
-    x.innerHTML="Store Data";
-    x.title="Double Click To Bill Products";
-    Count=Count-1;
-    }
-    else if(Count==0){
-      location.reload();
-    }
-}
+
 //localStorage.setItem("CountStoredData",0);
 
 
@@ -95,18 +71,15 @@ function addStoreRow() {
     
     var storeArea = document.getElementById("StoreRow");
     var newStoreArea = document.createElement("tr");
-    newStoreArea.innerHTML += "<td><input type='text' id='StoreName" + (StoreCount + 1) + "'></td><td><input type='text' id='StoreRate" + (StoreCount + 1) + "'></td><td><input type='text' id='StoreGST" + (StoreCount + 1) + "'></td><td><input type='text' id='StoreDiscount" + (StoreCount + 1) + "'></td>";
+    newStoreArea.innerHTML += "<td><input type='text' id='StoreName" + (StoreCount + 1) + "'></td><td><input type='text' id='StoreRate" + (StoreCount + 1) + "'></td>";
     storeArea.appendChild(newStoreArea);
 
     var name = document.getElementById("StoreName" + StoreCount).value;
     var rate = document.getElementById("StoreRate" + StoreCount).value;
-    var gst = document.getElementById("StoreGST" + StoreCount).value;
-    var discount = document.getElementById("StoreDiscount" + StoreCount).value;
 
     localStorage.setItem(name + "Item", name);
     localStorage.setItem(name + "Rate", rate);
-    localStorage.setItem(name + "GST", gst);
-    localStorage.setItem(name + "Discount", discount);
+   
     
     document.getElementById("StoreName" + (StoreCount)).setAttribute('readonly','true');
     document.getElementById("StoreRate" + (StoreCount)).setAttribute('readonly','true');
@@ -115,6 +88,26 @@ function addStoreRow() {
     
     StoreCount=StoreCount+1;
   
+    
+}
+
+function showStoreTable(x) {
+    
+   if(Count==1){
+    document.getElementById("Table").style.display="none";
+    document.getElementById("StoreTable").style.visibility="visible";
+    document.getElementById("clearBTN").style.display="inline-block";
+    document.getElementById("clearItemBTN").style.display="inline-block";
+    document.getElementById("checkBTN").style.display="inline-block";
+    document.getElementById("copyData").style.display="inline-block";
+    document.getElementById("addBTN").setAttribute('onclick','addStoreRow();');
+    x.innerHTML="Billing Area";
+    x.title="Click To Bill Products";
+    Count=2;
+   }
+   else if(Count==2){
+   location.reload();
+   }
     
 }
 
@@ -197,7 +190,7 @@ function checkItem() {
         {
             Swal.fire({
                 title: "Item Found",
-                text:"Rate : "+"₹ "+localStorage.getItem(k+"Rate")+' , '+"GST : "+localStorage.getItem(k+"GST")+" %"+' , '+"Discount : "+localStorage.getItem(k+"Discount")+" %",
+                text:"Rate : "+"₹ "+localStorage.getItem(k+"Rate"),
                 icon: "success"
               });
         }
@@ -223,11 +216,23 @@ function sendEmail(Data){
         Subject : "Bill Data Retrieval-Company_Name "+new Date,
         Body : Data
     }).then(
-      message => alert(message)
+        Swal.fire({
+            title: "Data Sent To Admin ",
+            icon: "success"
+          })
     );
 }
 
 function sendFormattedData() {
+    if(localStorage.length==0){
+        Swal.fire({
+            title: "No Data There To Be Sent",
+            icon: "info"
+          });
+        }
+    else{
+
+    
     for (let index = 0; index < localStorage.length; index++) {
         const key = localStorage.key(index);
         const value = localStorage.getItem(key);
@@ -238,4 +243,4 @@ function sendFormattedData() {
       sendEmail(document.getElementById('dataStorage').value);
 }
 
-
+}
