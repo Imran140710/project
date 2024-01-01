@@ -5,7 +5,7 @@ var Count = 1;
 function addRows() {
     var TableArea = document.getElementById("InsertRow");
     var newRow = document.createElement('tr');
-    newRow.innerHTML = "<th scope='row' id='Number" + Count + "'>" + (Count + 1) + "</th><td><input type='text' id='Name" + Count + "'></td><td><input type='text' id='Quantity" + Count + "'></td><td><input type='text' id='Rate" + Count + "'></td><td><input type='text' id='GST" + Count + "'></td><td><input type='text' id='Discount" + Count + "'></td><td><input type='text' readonly id='Amount" + Count + "'></td>";
+    newRow.innerHTML = "<th scope='row' id='Number" + Count + "'>" + (Count + 1) + "</th><td><input type='text' id='Name" + Count + "'></td><td><input type='text' id='Quantity" + Count + "'></td><td><input type='text' id='Rate" + Count + "'></td><td><input type='text' readonly id='Amount" + Count + "'></td>";
 
     TableArea.appendChild(newRow);
 
