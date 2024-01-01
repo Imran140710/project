@@ -28,6 +28,10 @@ th{
 #StoreTable{
     visibility: hidden;
 }
+
+#StoreTable input{
+    width:300px;
+}
 #clearBTN{
 border-radius: 3px;
 border-color: transparent;
@@ -111,14 +115,28 @@ textarea{
 
 #storeDataBTN{
     float:right;
-    position:absolute;
-    top:7;
     font-family:Poppins;
-    right:7;
-    height:100px;
-    width:220px;
+    height:50px;
+    width:200px;
+    margin-bottom: 30px;
+    margin-right: 20px;
     border:0px solid black;
     background-color:tomato;
+    color:white;
+    border-radius:3px ;
+    font-size:28px;
+}
+
+#addBTN{
+    float:right;
+    font-family:Poppins;
+    height:50px;
+    width:50px;
+    margin-bottom: 30px;
+    margin-right: 20px;
+    border:0px solid black;
+    background-color:rgb(67, 44, 236);
+    border-radius:3px ;
     color:white;
     font-size:28px;
 }
