@@ -1,12 +1,12 @@
 var Count = 1;
-
+var ToggleCount=1;
 
 
 
 function addRows() {
     var TableArea = document.getElementById("InsertRow");
     var newRow = document.createElement('tr');
-    newRow.innerHTML = "<th scope='row' id='Number" + Count + "'>" + (Count + 1) + "</th><td><input type='text' id='Name" + Count + "'></td><td><input type='text' id='Quantity" + Count + "'></td><td><input type='text' id='Rate" + Count + "'></td><td><input type='text' readonly id='Amount" + Count + "'></td>";
+    newRow.innerHTML = "<th scope='row' id='Number" + Count + "'>" + (TableArea.rows.length + 1) + "</th><td><input type='text' id='Name" + Count + "'></td><td><input type='text' id='Quantity" + Count + "'></td><td><input type='text' id='Rate" + Count + "'></td><td><input type='text' readonly id='Amount" + Count + "'></td>";
 
     TableArea.appendChild(newRow);
 
@@ -14,9 +14,7 @@ function addRows() {
 if(localStorage.getItem(document.getElementById("Name"+(Count-1)).value+"Item")==document.getElementById("Name"+(Count-1)).value)
 {
     document.getElementById("Rate"+(Count-1)).value=localStorage.getItem(document.getElementById("Name"+(Count-1)).value+"Rate");
-    document.getElementById("GST"+(Count-1)).value=localStorage.getItem(document.getElementById("Name"+(Count-1)).value+"GST");
-    document.getElementById("Discount"+(Count-1)).value=localStorage.getItem(document.getElementById("Name"+(Count-1)).value+"Discount");
-    //console.log(localStorage.getItem(localStorage.getItem("Item"+index)+"Rate"));
+   
 }
     
     Count = Count + 1;
@@ -25,9 +23,9 @@ if(localStorage.getItem(document.getElementById("Name"+(Count-1)).value+"Item")=
 function calculateAmount(index) {
     var quantity = parseFloat(document.getElementById("Quantity" + index).value) || 0;
     var rate = parseFloat(document.getElementById("Rate" + index).value) || 0;
-    
-    var amount = quantity * rate;
-    
+  
+    var amount = quantity * rate ;
+
     return amount;
 }
 
@@ -39,8 +37,6 @@ function updateAmounts() {
 
     calculateTotal();
 }
-
-
 
 function calculateTotal() {
     var table = document.getElementById("Table");
@@ -59,6 +55,9 @@ function calculateTotal() {
 }
 
 setInterval(updateAmounts,1000);
+
+
+
 
 
 //localStorage.setItem("CountStoredData",0);
@@ -89,17 +88,16 @@ function addStoreRow() {
 
 function showStoreTable(x) {
     
-   if(Count==1){
+   if(ToggleCount==1){
     document.getElementById("Table").style.display="none";
     document.getElementById("StoreTable").style.visibility="visible";
-    document.getElementById("showDataBTN").style.display="inline-block";
-    document.getElementById("copyData").style.display="inline-block";
+   
     document.getElementById("addBTN").setAttribute('onclick','addStoreRow();');
     x.innerHTML="Billing Area";
     x.title="Click To Bill Products";
-    Count=2;
+    ToggleCount=2;
    }
-   else if(Count==2){
+   else if(ToggleCount==2){
    location.reload();
    }
     
@@ -168,13 +166,29 @@ function displayLocalStorageData(){
 }
 function deleteItem(ID) {
     localStorage.removeItem(document.getElementById('Key'+ID).innerHTML);
-    document.getElementById('Row'+ID).style.display='none';
+   document.getElementById('Row'+ID).style.display='none';
+    
 
    
 }
   
 
-  function showData() {
-    displayLocalStorageData();
+function showData() {
+    var table = document.getElementById("Table");
+    var tableStyle = window.getComputedStyle(table);
+    var storeTable = document.getElementById("StoreTable");
+    var storeTableStyle = window.getComputedStyle(storeTable);
     
-  }
+    console.log("Table visibility:", tableStyle.visibility);
+    console.log("Table display:", tableStyle.display);
+    
+    if(ToggleCount==1){
+        Swal.fire({
+            title: "Go To Store Data Area",
+            icon: "info"
+        });
+    }
+    else if(ToggleCount==2){
+         displayLocalStorageData();
+}
+}
