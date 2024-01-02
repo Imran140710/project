@@ -1,9 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 
+body{
+    text-align: center;
+    align-self: center;
+    align-content: center;
+   
+}
+
 header{
     text-align:center;
     font-size:50px;
+    width: 100%;
     font-family:Poppins;
     font-weight: 700;
     margin-bottom: 3%;
@@ -32,89 +40,29 @@ th{
 #StoreTable input{
     width:300px;
 }
-#showDataBTN{
-border-radius: 3px;
-border-color: transparent;
-float:left;
-height: 50px;
-display: none;
-width: 200px;
-background-color: tomato;
-color: white;
-margin-left: auto;
-margin-right: auto;
-margin-top: 50px;
-margin-bottom: 50px;
-}
 
-#copyData{
-    border-radius: 3px;
-    border-color: transparent;
-    height: 50px;
-    display: none;
-    width: 200px;
-    background-color: rgb(55, 23, 233);
-    color: white;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px; 
-    margin-bottom: 50px;
-}
-
-#copyData:hover,#showDataBTN:hover{
-    opacity: 0.5;
-}
-#btnContainer{
-   display: flex;
-   margin-left: auto;
-   margin-right: auto;
-}
 textarea{
     width: 70%;
 }
 #Table{
     visibility: visible;
-}
-#noInternetModal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    height: 500px;
-    display: none;
-    width: 500px;
-    text-align: center;
-    padding-top: 30px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-#storeDataBTN{
-    float:right;
-    font-family:Poppins;
-    height:50px;
-    width:200px;
-    margin-bottom: 30px;
-    margin-right: 20px;
-    border:0px solid black;
-    background-color:tomato;
-    color:white;
-    border-radius:3px ;
-    font-size:28px;
+    margin-bottom: 50px;
 }
 
 #addBTN{
-    float:right;
-    font-family:Poppins;
-    height:50px;
-    width:50px;
-    margin-bottom: 30px;
-    margin-right: 20px;
-    border:0px solid black;
-    background-color:rgb(67, 44, 236);
-    border-radius:3px ;
-    color:white;
-    font-size:28px;
+    position: fixed;
+    bottom: 200px; /* Adjust the distance from the bottom */
+    left: 50%; /* Position the button horizontally at the center */
+    transform: translateX(-50%); /* Center the button precisely */
+    font-family: Poppins;
+    height: 50px;
+    width: 50px;
+    border: 0px solid black;
+    background-color: rgb(67, 44, 236);
+    border-radius: 3px;
+    color: white;
+    font-size: 28px;
+    z-index: 9999; /* Ensure it's above other elements */
 }
 
 #allData{
@@ -129,4 +77,18 @@ textarea{
     border-radius: 2px;
     height:fit-content;
     width:fit-content;
+}
+
+header label{
+    float:right;
+    right: 40px;
+    top: 0px;
+    position: absolute;
+   
+}
+
+header i{
+    font-size: 28px;
+    font-family: 'Poppins';
+    font-weight: 10;
 }
