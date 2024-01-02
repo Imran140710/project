@@ -7,6 +7,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://smtpjs.com/v3/smtp.js"></script>
+   
+
     
      <link rel="stylesheet" href="Bill.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
@@ -23,7 +25,7 @@
             <li><a class="dropdown-item" onclick="showStoreTable(this);" href="#">Store Data</a></li>
             <li><a class="dropdown-item" href="#">Backup Store</a></li>
             <li><a class="dropdown-item" href="#" onclick="showData();">Show Data</a></li>
-            <li><a class="dropdown-item" href="#" onclick="convertJSON();">Print Bill</a></li>
+            <li><a class="dropdown-item" href="#" onclick="printBill();">Print Bill</a></li>
             <li><a class="dropdown-item" href="#" onclick="sendFormattedData();">Send Formatted Data</a></li>
         </ul>
       </label>
@@ -81,8 +83,33 @@
             <th>Rate</th>
             <th>Action</th>
           </tr>
-        
+         
       </table>
+      <div id="billPrint" style="font-family:'Poppins';width: 28%;border:1px solid blue;display:none;">
+       <div style="width:100%;text-align: center;">
+        <h1>Company_Name</h1>
+        <h3>Company_Address</h3>
+        </div>
+        <div style="text-align: left;margin-left:10px;margin-bottom: 20px;">
+        <br>
+        <label style="text-align: left;">Date :</label><label id="BillDate"></label>
+        <br>
+        <label style="text-align: left;">Time :</label><label id="BillTime"></label>
+        </div>
+        <table id="billProductTable" style="width: 100%;text-align: right;">
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Rate</th>
+            <th>Amount</th>
+          </tr>
+        </table>
+        <div style="text-align: center;margin-top: 100px;">
+        <h5>Thank You!</h5>
+        <p>Thank you for supporting our shop. We truly appreciate your visit</p>
+        <p class="thanks">- [Shop Name]</p>
+        </div>
+      </div>
 </body>
 </html>
 <!-- <button onclick="showStoreTable(this);" id="storeDataBTN">Store Data</button>-->
