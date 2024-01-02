@@ -150,11 +150,10 @@ function showData() {
         displayLocalStorageData();
     }
 }
+function printBill() {
+    var JSON_Data = [];
 
-function convertJSON() {
-    var JSON_Data = []; 
-
-    for (let i = 0; i < Count-1; i++) {
+    for (let i = 0; i < Count - 1; i++) {
         var Name = $('#Name' + i).val();
         var Rate = $('#Rate' + i).val();
         var Quantity = $('#Quantity' + i).val();
@@ -170,7 +169,46 @@ function convertJSON() {
         JSON_Data.push(dataObj);
     }
 
-    var jsonStr = JSON.stringify(JSON_Data);
-    alert(jsonStr);
-   
+    generateInvoicePDF(JSON_Data);
 }
+
+function generateInvoicePDF(JSON_Data) {
+
+    var date = new Date;
+    var Month = date.getMonth();
+    var Day = date.getDate();
+    var Year = date.getFullYear();
+    $('#BillDate').html(Day+"/"+(Month+1)+"/"+Year);
+    $('#BillTime').html(date.getHours()+" : "+date.getMinutes()+" : "+date.getSeconds());
+
+    $('#billProductTable').html(`<tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Rate</th>
+            <th>Amount</th>
+          </tr>`);
+
+    JSON_Data.forEach((item) => {
+        $('#billProductTable').append(`<tr>
+            <td>${item.Name}</td>
+            <td>${item.Quantity}</td>
+            <td>${item.Rate}</td>
+            <td>${item.Amount}</td>
+          </tr>`);
+    });
+
+
+    var content = document.getElementById("billPrint").innerHTML;
+    var mywindow = window.open('', 'Print', 'height=700px,width=200px');
+
+    mywindow.document.write('<html><head><title>Print</title>');
+    mywindow.document.write('</head><body>');
+    mywindow.document.write(content);
+    mywindow.document.write('</body></html>');
+
+    mywindow.document.close();
+    mywindow.print();
+    mywindow.close();
+}
+
+
