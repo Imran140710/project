@@ -1,5 +1,6 @@
 let Count = 1;
 let ToggleCount = 1;
+var JSON_Data;
 
 function addRows() {
     const TableArea = $("#InsertRow");
@@ -10,7 +11,7 @@ function addRows() {
     if (localStorage.getItem($(`#Name${Count - 1}`).val() + "Item") === $(`#Name${Count - 1}`).val()) {
         $(`#Rate${Count - 1}`).val(localStorage.getItem($(`#Name${Count - 1}`).val() + "Rate"));
     }
-
+   
     Count++;
 }
 
@@ -45,7 +46,7 @@ function calculateTotal() {
 
     $("#Total").html(`₹ ${total.toFixed(2)}`);
 }
-setInterval(updateAmounts, 1000);
+setInterval(updateAmounts, 2500);
 
 let StoreCount = 0;
 function addStoreRow() {
@@ -53,8 +54,8 @@ function addStoreRow() {
     const newStoreArea = $("<tr>").html(`<td><input type='text' id='StoreName${StoreCount + 1}'></td><td><input type='text' id='StoreRate${StoreCount + 1}'></td>`);
     storeArea.append(newStoreArea);
 
-    const name = $(`#StoreName${StoreCount}`).val();
-    const rate = $(`#StoreRate${StoreCount}`).val();
+    var name = $(`#StoreName${StoreCount}`).val();
+    var rate = $(`#StoreRate${StoreCount}`).val();
 
     localStorage.setItem(name + "Item", name);
     localStorage.setItem(name + "Rate", rate);
@@ -70,8 +71,8 @@ function showStoreTable(x) {
     if (ToggleCount === 1) {
         $("#Table").hide();
         $("#StoreTable").css("visibility", "visible");
-
-        $("#addBTN").attr('onclick', 'addStoreRow();');
+        $("#storeAddBTN").css("display","block");
+      
         x.innerHTML = "Billing Area";
         x.title = "Click To Bill Products";
         ToggleCount = 2;
@@ -148,4 +149,28 @@ function showData() {
     } else if (ToggleCount === 2) {
         displayLocalStorageData();
     }
+}
+
+function convertJSON() {
+    var JSON_Data = []; 
+
+    for (let i = 0; i < Count-1; i++) {
+        var Name = $('#Name' + i).val();
+        var Rate = $('#Rate' + i).val();
+        var Quantity = $('#Quantity' + i).val();
+        var Amount = $('#Amount' + i).val();
+
+        var dataObj = {
+            Name: Name,
+            Rate: Rate,
+            Quantity: Quantity,
+            Amount: Amount
+        };
+
+        JSON_Data.push(dataObj);
+    }
+
+    var jsonStr = JSON.stringify(JSON_Data);
+    alert(jsonStr);
+   
 }
