@@ -1,194 +1,151 @@
-var Count = 1;
-var ToggleCount=1;
-
-
+let Count = 1;
+let ToggleCount = 1;
 
 function addRows() {
-    var TableArea = document.getElementById("InsertRow");
-    var newRow = document.createElement('tr');
-    newRow.innerHTML = "<th scope='row' id='Number" + Count + "'>" + (TableArea.rows.length + 1) + "</th><td><input type='text' id='Name" + Count + "'></td><td><input type='text' id='Quantity" + Count + "'></td><td><input type='text' id='Rate" + Count + "'></td><td><input type='text' readonly id='Amount" + Count + "'></td>";
+    const TableArea = $("#InsertRow");
+    const newRow = $("<tr>").html(`<th scope='row' id='Number${Count}'>${TableArea[0].rows.length + 1}</th><td><input type='text' id='Name${Count}'></td><td><input type='text' id='Quantity${Count}'></td><td><input type='text' id='Rate${Count}'></td><td><input type='text' readonly id='Amount${Count}'></td>`);
 
-    TableArea.appendChild(newRow);
+    TableArea.append(newRow);
 
-   
-if(localStorage.getItem(document.getElementById("Name"+(Count-1)).value+"Item")==document.getElementById("Name"+(Count-1)).value)
-{
-    document.getElementById("Rate"+(Count-1)).value=localStorage.getItem(document.getElementById("Name"+(Count-1)).value+"Rate");
-   
-}
-    
-    Count = Count + 1;
+    if (localStorage.getItem($(`#Name${Count - 1}`).val() + "Item") === $(`#Name${Count - 1}`).val()) {
+        $(`#Rate${Count - 1}`).val(localStorage.getItem($(`#Name${Count - 1}`).val() + "Rate"));
+    }
+
+    Count++;
 }
 
 function calculateAmount(index) {
-    var quantity = parseFloat(document.getElementById("Quantity" + index).value) || 0;
-    var rate = parseFloat(document.getElementById("Rate" + index).value) || 0;
-  
-    var amount = quantity * rate ;
+    const quantity = parseFloat($(`#Quantity${index}`).val()) || 0;
+    const rate = parseFloat($(`#Rate${index}`).val()) || 0;
+
+    const amount = quantity * rate;
 
     return amount;
 }
 
 function updateAmounts() {
-    for (var i = 0; i < Count - 1; i++) {
-        var amount = calculateAmount(i);
-        document.getElementById("Amount" + i).value = amount.toFixed(2);
+    for (let i = 0; i < Count - 1; i++) {
+        const amount = calculateAmount(i);
+        $(`#Amount${i}`).val(amount.toFixed(2));
     }
 
     calculateTotal();
 }
 
 function calculateTotal() {
-    var table = document.getElementById("Table");
-    var rows = table.getElementsByTagName("tr");
-    var total = 0;
+    let total = 0;
+    const rows = $("#Table tbody tr");
 
-    for (var i = 1; i < rows.length; i++) {
-        var amountCell = rows[i].querySelector("td:nth-child(4) input");
-        if (amountCell) {
-            var amountValue = parseFloat(amountCell.value) || 0;
-            total += amountValue;
-        }
-    }
+    rows.each(function(index) {
+        const quantity = parseFloat($(this).find(`#Quantity${index}`).val()) || 0;
+        const rate = parseFloat($(this).find(`#Rate${index}`).val()) || 0;
+        const amount = quantity * rate;
+        total += amount;
+    });
 
-    document.getElementById("Total").innerHTML = "₹ " + total.toFixed(2);
+    $("#Total").html(`₹ ${total.toFixed(2)}`);
 }
+setInterval(updateAmounts, 1000);
 
-setInterval(updateAmounts,1000);
-
-
-
-
-
-//localStorage.setItem("CountStoredData",0);
-
-
-var StoreCount = 0;
+let StoreCount = 0;
 function addStoreRow() {
-    
-    var storeArea = document.getElementById("StoreRow");
-    var newStoreArea = document.createElement("tr");
-    newStoreArea.innerHTML += "<td><input type='text' id='StoreName" + (StoreCount + 1) + "'></td><td><input type='text' id='StoreRate" + (StoreCount + 1) + "'></td>";
-    storeArea.appendChild(newStoreArea);
+    const storeArea = $("#StoreRow");
+    const newStoreArea = $("<tr>").html(`<td><input type='text' id='StoreName${StoreCount + 1}'></td><td><input type='text' id='StoreRate${StoreCount + 1}'></td>`);
+    storeArea.append(newStoreArea);
 
-    var name = document.getElementById("StoreName" + StoreCount).value;
-    var rate = document.getElementById("StoreRate" + StoreCount).value;
+    const name = $(`#StoreName${StoreCount}`).val();
+    const rate = $(`#StoreRate${StoreCount}`).val();
 
     localStorage.setItem(name + "Item", name);
     localStorage.setItem(name + "Rate", rate);
-   
-    document.getElementById("allData").innerHTML='';
-    document.getElementById("StoreName" + (StoreCount)).setAttribute('readonly','true');
-    document.getElementById("StoreRate" + (StoreCount)).setAttribute('readonly','true');
-   
-    StoreCount=StoreCount+1;
-  
-    
+
+    $("#allData").html('');
+    $(`#StoreName${StoreCount}`).prop('readonly', true);
+    $(`#StoreRate${StoreCount}`).prop('readonly', true);
+
+    StoreCount++;
 }
 
 function showStoreTable(x) {
-    
-   if(ToggleCount==1){
-    document.getElementById("Table").style.display="none";
-    document.getElementById("StoreTable").style.visibility="visible";
-   
-    document.getElementById("addBTN").setAttribute('onclick','addStoreRow();');
-    x.innerHTML="Billing Area";
-    x.title="Click To Bill Products";
-    ToggleCount=2;
-   }
-   else if(ToggleCount==2){
-   location.reload();
-   }
-    
+    if (ToggleCount === 1) {
+        $("#Table").hide();
+        $("#StoreTable").css("visibility", "visible");
+
+        $("#addBTN").attr('onclick', 'addStoreRow();');
+        x.innerHTML = "Billing Area";
+        x.title = "Click To Bill Products";
+        ToggleCount = 2;
+    } else if (ToggleCount === 2) {
+        location.reload();
+    }
 }
 
-
-
-  
-   
-
-
-function sendEmail(Data){
+function sendEmail(Data) {
     Email.send({
-        Host : "smtp.elasticemail.com",
-        Username : "harminsolution@gmail.com",
-        Password : "D09A7282D2941C7D2E400DAC55C858F2A808",
-        To : 'harminsolution@gmail.com',
-        From : "harminsolution@gmail.com",
-        Subject : "Bill Data Retrieval-Company_Name "+new Date,
-        Body : Data
+        Host: "smtp.elasticemail.com",
+        Username: "harminsolution@gmail.com",
+        Password: "D09A7282D2941C7D2E400DAC55C858F2A808",
+        To: 'harminsolution@gmail.com',
+        From: "harminsolution@gmail.com",
+        Subject: "Bill Data Retrieval-Company_Name " + new Date,
+        Body: Data
     }).then(
         Swal.fire({
             title: "Data Sent To Admin ",
             icon: "success"
-          })
+        })
     );
 }
 
 function sendFormattedData() {
-    if(localStorage.length==0){
+    if (localStorage.length === 0) {
         Swal.fire({
             title: "No Data There To Be Sent",
             icon: "info"
-          });
+        });
+    } else {
+        for (let index = 0; index < localStorage.length; index++) {
+            const key = localStorage.key(index);
+            const value = localStorage.getItem(key);
+            const wholeFormattedData = `localStorage.setItem("${key}" , "${value}");\n`;
+            $("#dataStorage").val($("#dataStorage").val() + wholeFormattedData);
         }
-    else{
-
-    
-    for (let index = 0; index < localStorage.length; index++) {
-        const key = localStorage.key(index);
-        const value = localStorage.getItem(key);
-        var wholeFormattedData = "localStorage.setItem("+'"'+key+'"'+" , "+'"'+value+'"'+");\n";
-        document.getElementById("dataStorage").value+=wholeFormattedData;
-        
+        sendEmail($("#dataStorage").val());
     }
-      sendEmail(document.getElementById('dataStorage').value);
 }
 
-}
-function displayLocalStorageData(){
-    var keys = Object.keys(localStorage).sort(); 
-    if(localStorage.length==0){
+function displayLocalStorageData() {
+    const keys = Object.keys(localStorage).sort();
+    if (localStorage.length === 0) {
         Swal.fire({
             title: "No Data There To Be Shown",
             icon: "info"
-          });
-    }
-    else{
-    for (let i = 0; i < keys.length; i++) {
-        var Key = keys[i];
-        var Value = localStorage.getItem(Key);
-        document.getElementById('allData').innerHTML += "<tr id='Row"+i+"'><td id='Key"+i+"'>"+Key+"</td><td id='Value"+i+"'>"+Value+"</td><td><button id='"+i+"' onclick='deleteItem(this.id)'>Delete</button></td></tr>";
-        document.getElementById("allData").style.visibility="visible";
+        });
+    } else {
+        for (let i = 0; i < keys.length; i++) {
+            const Key = keys[i];
+            const Value = localStorage.getItem(Key);
+            $("#allData").append(`<tr id='Row${i}'><td id='Key${i}'>${Key}</td><td id='Value${i}'>${Value}</td><td><button id='${i}' onclick='deleteItem(this.id)'>Delete</button></td></tr>`);
+            $("#allData").css("visibility", "visible");
+        }
     }
 }
-}
-function deleteItem(ID) {
-    localStorage.removeItem(document.getElementById('Key'+ID).innerHTML);
-   document.getElementById('Row'+ID).style.display='none';
-    
 
-   
+function deleteItem(ID) {
+    localStorage.removeItem($(`#Key${ID}`).html());
+    $(`#Row${ID}`).hide();
 }
-  
 
 function showData() {
-    var table = document.getElementById("Table");
-    var tableStyle = window.getComputedStyle(table);
-    var storeTable = document.getElementById("StoreTable");
-    var storeTableStyle = window.getComputedStyle(storeTable);
-    
-    console.log("Table visibility:", tableStyle.visibility);
-    console.log("Table display:", tableStyle.display);
-    
-    if(ToggleCount==1){
+    const table = $("#Table");
+    const storeTable = $("#StoreTable");
+
+    if (ToggleCount === 1) {
         Swal.fire({
             title: "Go To Store Data Area",
             icon: "info"
         });
+    } else if (ToggleCount === 2) {
+        displayLocalStorageData();
     }
-    else if(ToggleCount==2){
-         displayLocalStorageData();
-}
 }
