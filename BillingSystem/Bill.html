@@ -2,13 +2,13 @@
 <html>
 <head>
     <title>Billing System</title>
-    <script src="Bill.js"></script>
+    <script src="Bill_Git.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://smtpjs.com/v3/smtp.js"></script>
     
-     <link rel="stylesheet" href="Bill.css">
+     <link rel="stylesheet" href="Bill_Git.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -23,6 +23,7 @@
             <li><a class="dropdown-item" onclick="showStoreTable(this);" href="#">Store Data</a></li>
             <li><a class="dropdown-item" href="#">Backup Store</a></li>
             <li><a class="dropdown-item" href="#" onclick="showData();">Show Data</a></li>
+            <li><a class="dropdown-item" href="#" onclick="convertJSON();">Print Bill</a></li>
             <li><a class="dropdown-item" href="#" onclick="sendFormattedData();">Send Formatted Data</a></li>
         </ul>
       </label>
@@ -49,8 +50,9 @@
           </tr>
        </tbody>
        <tr>
-        <td scope="row" style="background-color:#147a23;color:white;">Total</td>
-        <td id="Total" style="background-color:#147a23;color:white;">₹ 0</td>
+        <td scope="row" style="background-color:#147a23;color:white;font-size: 26px;font-family: 'Poppins';">Total</td>
+        <td id="Total" style="background-color:#147a23;color:white;font-size: 26px;font-family: 'Poppins';">₹ 0</td>
+        <td style="width: 20px;border-color: transparent;height: auto;"> <button onclick="addRows();" id="addBTN">Add Row</button></td>
        </tr>
       </table>
       <table class="table text-center table-dark table-hover" id="StoreTable">
@@ -68,9 +70,11 @@
       </tbody>
       
       </table>
-      <button onclick="addRows();" id="addBTN">+</button>
+      <button id="storeAddBTN" onclick="addStoreRow();">Add Row</button>
+       
     
       <input type="hidden" id="dataStorage">
+     
       <table id="allData" class="table table-dark text-center">
           <tr>
             <th>Name</th>
